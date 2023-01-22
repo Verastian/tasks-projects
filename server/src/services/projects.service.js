@@ -14,14 +14,6 @@ module.exports = {
     getProjectById: async (id) => {
         try {
             const projectFound = await Project.findById(id)
-                .populate({
-                    path: 'columns',
-                    // populate: {
-                    //     path: 'tasks', select: '_id'
-                    // },
-                    // select: '_id'
-
-                })
             return projectFound;
         } catch (error) {
             throw new Error(error);
@@ -56,7 +48,6 @@ module.exports = {
     updateProject: async (id, projectData) => {
         try {
             const project = await Project.findByIdAndUpdate(id, projectData, { new: true })
-            console.log(project)
             return project
         } catch (error) {
             throw new Error(error);

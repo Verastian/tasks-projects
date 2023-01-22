@@ -30,7 +30,7 @@ module.exports = {
         try {
             const task = await tasksService.createTask(req.body)
             await tasksService.addTaskToColumn(task.columnId, task._id)
-            io.emit('task:created', task)
+            // io.emit('task:created', task)
             return res.status(httpStatus.CREATED).json({ data: task })
         } catch (error) {
             return res.status(httpStatus.INTERNAL_SERVER_ERROR).json({ message: error.message })

@@ -43,9 +43,7 @@ module.exports = {
     },
 
     // código para actualizar una columna en la base de datos
-    updateColumn: async (id, columnData) => {
-        const column = await Column.findById(id)
-        Object.assign(column, columnData)
+    updateColumn: async (column) => {
         return await column.save()
     },
     // actualizar Columna al eliminar una tarea 
@@ -80,9 +78,9 @@ module.exports = {
             throw new Error(error);
         }
     },
-    findColumnById: async (id) => {
+    findColumnByIdProject: async (projectId) => {
         try {
-            const column = await Column.findById({ _id: id })
+            const column = await Column.find({ projectId: projectId })
             return column
         } catch (error) {
             throw new Error(error);
