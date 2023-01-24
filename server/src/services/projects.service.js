@@ -48,6 +48,7 @@ module.exports = {
     updateProject: async (id, projectData) => {
         try {
             const project = await Project.findByIdAndUpdate(id, projectData, { new: true })
+            console.log(project)
             return project
         } catch (error) {
             throw new Error(error);

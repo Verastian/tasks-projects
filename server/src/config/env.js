@@ -7,6 +7,6 @@ module.exports = {
     PORT: env.PORT,
     MONGODB_URI: env.MONGODB_URI,
     API: { PREFIX: env.API || '/api' },
-    CLIENT_URI: env.CLIENT_URI
+    CLIENT_URI: env.CLIENT_URI || 'http://localhost:5173'
 
 }

@@ -52,17 +52,15 @@ module.exports = {
 
     // código para actualizar una columna
     updateColumn: async (req, res) => {
+        console.log(req.body)
         const { name, projectId, tasks: _tasks } = req.body
         try {
             const column = await columnsService.getColumnById(req.params.id)
-            column.tasks = _tasks
-            column.name = name
-            column.projectId = projectId
+            column.tasks = _tasks || column.tasks
+            column.name = name || column.name
+            column.projectId = projectId || column.projectId
 
             const updateColumn = await columnsService.updateColumn(column)
-            await projectsService.updateProject(projectId, { columns: req.body })
-            // io.emit('column:updated', column)
-            // io.emit('project:updated', project)
             return res.status(httpStatus.OK).json({ data: updateColumn })
         } catch (error) {
             return res.status(httpStatus.INTERNAL_SERVER_ERROR).json({ message: error.message })
