@@ -28,7 +28,9 @@ module.exports = {
     // código para crear una tarea
     createTask: async (req, res) => {
         try {
+
             const task = await tasksService.createTask(req.body)
+            console.log(task)
             await tasksService.addTaskToColumn(task.columnId, task._id)
             // io.emit('task:created', task)
             return res.status(httpStatus.CREATED).json({ data: task })

@@ -12,7 +12,7 @@ module.exports = {
         // app.use(cors())
         app.use(
             cors({
-                origin: env.CLIENT_URI,
+                origin: [env.CLIENT_URI, 'http://localhost:5174'],
                 methods: "GET,POST,PUT,DELETE",
                 credentials: true,
             })
