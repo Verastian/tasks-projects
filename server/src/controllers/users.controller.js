@@ -38,7 +38,6 @@ module.exports = {
 
     // código para actualizar un proyecto en la base de datos
     updateUser: async (req, res) => {
-        console.log(req.body)
         try {
             const user = await usersService.updateUser(req.params.id, req.body)
             if (!user) return res.sendStatus(httpStatus.NOT_FOUND)

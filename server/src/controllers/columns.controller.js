@@ -52,7 +52,6 @@ module.exports = {
 
     // código para actualizar una columna
     updateColumn: async (req, res) => {
-        console.log(req.body)
         const { name, projectId, tasks: _tasks } = req.body
         try {
             const column = await columnsService.getColumnById(req.params.id)
@@ -70,7 +69,6 @@ module.exports = {
     // código para eliminar una columna
     deleteColumn: async (req, res) => {
         const { id } = req.params
-        console.log(id)
         try {
             const project = await projectsService.getProjectByColumnId(id)
             // Eliminamos todas las tareas de la columna

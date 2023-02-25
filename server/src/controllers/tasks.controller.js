@@ -19,7 +19,6 @@ module.exports = {
         try {
             const task = await tasksService.getTaskById(id)
             return res.status(httpStatus.OK).json({ data: task })
-
         } catch (error) {
             return res.status(httpStatus.INTERNAL_SERVER_ERROR).json({ message: error.message })
 
@@ -28,11 +27,8 @@ module.exports = {
     // código para crear una tarea
     createTask: async (req, res) => {
         try {
-
             const task = await tasksService.createTask(req.body)
-            console.log(task)
             await tasksService.addTaskToColumn(task.columnId, task._id)
-            // io.emit('task:created', task)
             return res.status(httpStatus.CREATED).json({ data: task })
         } catch (error) {
             return res.status(httpStatus.INTERNAL_SERVER_ERROR).json({ message: error.message })
@@ -42,11 +38,10 @@ module.exports = {
     // código para actualizar una tarea
     updateTask: async (req, res) => {
         try {
+            console.log(req.params.id)
+            console.log('BODY: ', req.body)
             const task = await tasksService.updateTask(req.params.id, req.body)
-            const column = await columnsService.updateColumn(task.columnId, { tasks: req.body.tasks })
-            io.emit('task:updated', task)
-            io.emit('column:updated', column)
-            return res.status(httpStatus.OK).json(task)
+            return res.status(httpStatus.OK).json({ data: task })
         } catch (error) {
             return res.status(httpStatus.INTERNAL_SERVER_ERROR).json({ message: error.message })
         }
@@ -59,9 +54,8 @@ module.exports = {
             const column = await columnsService.getColumnByTaskId(id)
             await tasksService.deleteTask(id)
             await columnsService.removeTaskFromColumn(column._id, id)
-            io.emit('task:deleted', id)
-            // io.emit('column:updated', column)
-            return res.status(httpStatus.NO_CONTENT).send()
+            const columnUpdated = await columnsService.getColumnById(column._id)
+            return res.status(httpStatus.OK).json({ message: 'La tarea se elimino correctamente', data: columnUpdated })
         } catch (error) {
             return res.status(httpStatus.INTERNAL_SERVER_ERROR).json({ message: error.message })
         }
