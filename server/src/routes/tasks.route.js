@@ -5,12 +5,6 @@ const { getTasks, createTask, updateTask, deleteTask, getTask } = require('../co
 router.route('/')
     .get(getTasks)
     .post(createTask)
-
-// router.route('/')
-// .get(getTasks)
-// router.route('/:columnId')
-// .post(createTask)
-
 router.route('/:id')
     .get(getTask)
     .put(updateTask)

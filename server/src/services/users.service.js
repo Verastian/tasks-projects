@@ -1,7 +1,7 @@
-const { Column, User } = require("../models")
+const { Column, User } = require("../models");
+const { wrapperCommon } = require("../utils/wrappers.util");
 
 module.exports = {
-    // código para obtener las tareas de la base de datos
     getUsers: async () => {
         try {
             const users = await User.find({})
@@ -10,7 +10,6 @@ module.exports = {
             throw new Error(error);
         }
     },
-    // código para obtener la tareas por ID
     getUserById: async (id) => {
         try {
             const user = await User.findById(id)
@@ -19,18 +18,13 @@ module.exports = {
             throw new Error(error);
         }
     },
-
-    // código para crear una tarea en la base de datos
     createUser: async (userData) => {
         try {
-            const user = new User(userData)
-            return await user.save()
+            return await userData.save()
         } catch (error) {
             throw new Error(error);
         }
     },
-
-    // código para actualizar una tarea en la base de datos
     updateUser: async (id, userData) => {
         try {
             return await User.findByIdAndUpdate(id, userData, { new: true })
@@ -38,8 +32,6 @@ module.exports = {
             throw new Error(error);
         }
     },
-
-    // código para eliminar una tarea de la base de datos
     deleteUser: async (id) => {
         try {
             return await User.findByIdAndDelete(id)
@@ -69,7 +61,12 @@ module.exports = {
         } catch (error) {
             throw new Error(error);
         }
-    }
+    },
+    getUserByEmail: wrapperCommon(async (email) => {
+        console.log(email)
+        const userFound = await User.findOne({ email })
+        return userFound
+    }),
 
 
 }

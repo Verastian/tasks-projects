@@ -1,6 +1,6 @@
 const httpStatus = require('http-status')
 const { usersService, tasksService, columnsService } = require('../services')
-const io = require('../sockets')
+// const io = require('../sockets')
 
 module.exports = {
     // código para obtener los proyectos de la base de datos

@@ -1,50 +1,54 @@
 const http = require('http')
-const env = require('./src/config/env')
-const { initExpress, connectDB, disconnectDB } = require('./src/loaders')
+const express = require("express");
+// const { initExpress, connectDB, disconnectDB } = require('./src/loaders')
+const app = express();
+const { PORT } = require('./src/config/env')
+const loaders = require('./src/loaders')
 
-// inicializamos express
-const app = initExpress()
+
+async function run() {
+    // const app = express();
+  
+    await loaders({ expressApp: app });
+  
+    const server = app.listen(PORT, () => {
+      const port = server.address().port;
+      console.info(`Server listening on port: ${port} 🛡️`);
+    }).on('error', err => {
+      console.error(err);
+      process.exit(1);
+    });
+  }
+  run();
 
 // habilitamos cors
-const corsOptions = {
-    origin: env.CLIENT_URI,
-    methods: "GET,POST,PUT,DELETE",
-    credentials: true,
-}
+// const corsOptions = {
+//     origin: env.CLIENT_URI,
+//     methods: "GET,POST,PUT,DELETE",
+//     credentials: true,
+// }
 
 // creamos el servidor
-const server = http.createServer(app)
+// const server = http.createServer(app)
 
-// iniciamos el servidor
-server.listen(env.PORT, () => {
-    console.log(`Server listening on PORT ${env.PORT}`)
-})
-
-// conectamos a la base de datos al iniciar el servidor
-connectDB()
-
-// cerramos la conexión a la base de datos al apagar el servidor
-process.on('SIGINT', () => {
-    disconnectDB()
-})
 
 // Socket.io
-const io = require('socket.io')(server, {
-    pingTimeout: 60000,
-    cors: corsOptions
-});
-io.on("connection", (socket) => {
-    console.log(`⚡: ${socket.id} user just connected!`);
+// const io = require('socket.io')(server, {
+//     pingTimeout: 60000,
+//     cors: corsOptions
+// });
+// io.on("connection", (socket) => {
+//     console.log(`⚡: ${socket.id} user just connected!`);
     // definir los eventos 
     // socket.on('test', (projects) => {
     //     console.log('PROJECTS FROM CLIENT: ', projects)
     // })
-    socket.emit('response', { msg: 'emitiendo respuesta desde el servidor' })
+    // socket.emit('response', { msg: 'emitiendo respuesta desde el servidor' })
 
-    socket.on('open-Project', (project) => {
-        socket.join(project._id)
+    // socket.on('open-Project', (project) => {
+    //     socket.join(project._id)
         // socket.emit("response", { msg: 'hola' })
-    });
+    // });
     // socket.on('new-project', (project) => {
     //     // const project = project;
     //     socket.to(project._id).emit('project-added', project)
@@ -62,4 +66,4 @@ io.on("connection", (socket) => {
     //     const project = task.project._id
     //     socket.to(project).emit('new-state-task', task)
     // })
-})
+// })
